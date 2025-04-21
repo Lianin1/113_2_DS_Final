@@ -6,3 +6,11 @@
   [提案影片 YouTube 連結](https://youtu.be/qAA3lzzANrg)
   
 </details>
+
+
+<details>
+  <summary><strong>第二次進度報告</strong></summary>
+
+  [影片 YouTube 連結](https://youtu.be/xobWjNFoGiE)
+  
+</details>
