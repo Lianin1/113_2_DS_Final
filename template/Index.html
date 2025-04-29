@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetainAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #7ce7ff;
+            --background-dark: #000000;
+            --background-light: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(124, 231, 255, 0.2);
+        }
+
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            position: relative;
+            padding: 6rem 0;
+            margin-bottom: 4rem;
+            background: linear-gradient(to bottom, 
+                rgba(0, 0, 0, 0.8) 0%, 
+                rgba(0, 0, 0, 0.9) 100%);
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--primary-color), 
+                transparent);
+            opacity: 0.5;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--primary-color), 
+                transparent);
+            opacity: 0.5;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0;
+            background: linear-gradient(135deg, 
+                var(--primary-color) 0%, 
+                #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(124, 231, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(124, 231, 255, 0.4);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(26, 26, 26, 0.9);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(124, 231, 255, 0.2);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, 
+                rgba(124, 231, 255, 0.2) 0%, 
+                rgba(124, 231, 255, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background: linear-gradient(135deg, 
+                rgba(124, 231, 255, 0.3) 0%, 
+                rgba(124, 231, 255, 0.2) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(124, 231, 255, 0.1);
+            border-color: rgba(124, 231, 255, 0.4);
+            color: var(--primary-color);
+        }
+
+        .btn-primary:disabled {
+            background: rgba(26, 26, 26, 0.6);
+            border-color: rgba(124, 231, 255, 0.1);
+            color: rgba(124, 231, 255, 0.3);
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 移除 Bootstrap 預設的按鈕樣式 */
+        .btn-primary:not(:disabled):not(.disabled):active,
+        .btn-primary:not(:disabled):not(.disabled).active {
+            background: linear-gradient(135deg, 
+                rgba(124, 231, 255, 0.3) 0%, 
+                rgba(124, 231, 255, 0.2) 100%);
+            border-color: rgba(124, 231, 255, 0.4);
+            box-shadow: 0 10px 20px rgba(124, 231, 255, 0.1);
+        }
+
+        /* 移除按鈕點擊時的輪廓 */
+        .btn:focus, .btn:active {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .card {
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(124, 231, 255, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .section {
+                padding: 2rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        .spinner-border {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <h1>RetainAI</h1>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2 class="text-center">Upload File</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <input type="file" class="form-control" id="fileInput" required>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="text-center mb-4">
+            <button id="generateReport" class="btn btn-primary" disabled>Generate Analysis Report</button>
+        </div>
+
+        <div id="downloadSection" class="section" style="display: none;">
+            <h2 class="text-center">Analysis Reports</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Report 1</h5>
+                            <a href="#" class="btn btn-primary download-link" data-file="report1">Download</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Report 2</h5>
+                            <a href="#" class="btn btn-primary download-link" data-file="report2">Download</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Report 3</h5>
+                            <a href="#" class="btn btn-primary download-link" data-file="report3">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('generateReport').disabled = false;
+                    }
+                });
+            }
+        });
+
+        document.getElementById('generateReport').addEventListener('click', function() {
+            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...';
+            this.disabled = true;
+            
+            socket.emit('generate_report');
+        });
+
+        socket.on('report_ready', function(data) {
+            const generateBtn = document.getElementById('generateReport');
+            generateBtn.innerHTML = 'Generate Analysis Report';
+            generateBtn.disabled = false;
+            
+            const downloadSection = document.getElementById('downloadSection');
+            downloadSection.style.display = 'block';
+            
+            const downloadLinks = document.querySelectorAll('.download-link');
+            downloadLinks.forEach(link => {
+                const fileType = link.getAttribute('data-file');
+                link.href = `/download/${fileType}`;
+            });
+        });
+
+        socket.on('error', function(error) {
+            const generateBtn = document.getElementById('generateReport');
+            generateBtn.innerHTML = 'Generate Analysis Report';
+            generateBtn.disabled = false;
+            alert('An error occurred: ' + error);
+        });
+    </script>
+</body>
+</html>
