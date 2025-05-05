@@ -20,8 +20,7 @@
 在[hr_analysis_feedback](https://github.com/Lianin1/113_2_DS_Final/blob/main/hr_analysis_feedback.py)中需先行安裝以下套件：
 
 ```python
+pip install google-generativeai python-dotenv pandas reportlab
+
 pip install tabulate
 
-
-```pyhon
-pip install google-generativeai python-dotenv pandas reportlab
