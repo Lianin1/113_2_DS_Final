@@ -22,5 +22,6 @@
 ```python
 pip install google-generativeai python-dotenv pandas reportlab
 
+
 pip install tabulate
 
