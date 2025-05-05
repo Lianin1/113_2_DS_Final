@@ -19,6 +19,9 @@
 
 在[hr_analysis_feedback](https://github.com/Lianin1/113_2_DS_Final/blob/main/hr_analysis_feedback.py)中需先行安裝以下套件：
 
+文字檔使用Noto_Sans_TC字體
+[Download](https://fonts.google.com/download/next-steps)
+
 ```python
 pip install google-generativeai python-dotenv pandas reportlab
 pip install tabulate
