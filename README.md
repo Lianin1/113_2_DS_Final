@@ -15,7 +15,7 @@
   
 </details>
 
-<h6>⭐️：</h6>
+<h6>⭐️</h6>
 
 在[hr_analysis_feedback](https://github.com/Lianin1/113_2_DS_Final/blob/main/hr_analysis_feedback.py)中需先行安裝以下套件：
 
