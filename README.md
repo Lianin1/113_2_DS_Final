@@ -14,3 +14,14 @@
   [影片 YouTube 連結](https://youtu.be/xobWjNFoGiE)
   
 </details>
+
+<h6>⭐️：</h6>
+
+在[hr_analysis_feedback](https://github.com/Lianin1/113_2_DS_Final/blob/main/hr_analysis_feedback.py)中需先行安裝以下套件：
+
+```python
+pip install tabulate
+
+
+```pyhon
+pip install google-generativeai python-dotenv pandas reportlab
