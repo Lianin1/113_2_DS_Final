@@ -53,9 +53,9 @@ for i, col in enumerate(original_cols):
     df[short_score_cols[i]] = df[col].apply(convert_to_score)
 
 # 計算平均分數
-df["平均情緒分數"] = df[short_score_cols].sum(axis=1) / 6
-df["平均情緒分數"] = df["平均情緒分數"].round(1)
-df.loc[df["平均情緒分數"] == 0, "平均情緒分數"] = 0.1
+df["回饋情緒分數"] = df[short_score_cols].sum(axis=1) / 6
+df["回饋情緒分數"] = df["回饋情緒分數"].round(1)
+df.loc[df["回饋情緒分數"] == 0, "回饋情緒分數"] = 0.1
 
 # 對應表
 gender_map = {'男': 0, '女': 1}
@@ -68,9 +68,9 @@ df['部門'] = df['部門'].map(department_map)
 df['Level'] = df['Level'].map(level_map)
 
 # 組成輸出 DataFrame
-result_cols = ["員工編號"] + ['性別'] + ['部門'] + ['Level'] + ['工作環境滿意度'] + ['薪資福利滿意度'] + ['管理制度滿意度'] + ['工作與生活平衡'] + ["平均情緒分數"]
+result_cols = ["員工編號"] + ['性別'] + ['部門'] + ['Level'] + ['工作環境滿意度'] + ['薪資福利滿意度'] + ['管理制度滿意度'] + ['工作與生活平衡'] + ["回饋情緒分數"]
 result_df = df[result_cols]
 
 # 將結果儲存成 CSV 檔案
-result_df.to_csv("分析結果.csv", index=False, encoding='utf-8-sig')
-print("✅ 分析完成，結果已儲存為本地端 CSV 檔案：分析結果.csv")
+result_df.to_csv("dataresult.csv", index=False, encoding='utf-8-sig')
+print("✅ 分析完成，結果已儲存為本地端 CSV 檔案：dataresult.csv")
