@@ -13,9 +13,13 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+import socketio
 
 # 設定日誌
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# 初始化 Socket.IO 客戶端
+sio = socketio.Client(logger=True, engineio_logger=True)
 
 # 載入環境變數並設定 API 金鑰
 load_dotenv()
@@ -118,8 +122,18 @@ def generate_pdf(groups, output_pdf):
     max_image_width = (page_width - 50) / 2  # 每張圖片寬度（考慮邊距和間距）
     max_image_height = (page_height - 60) / 3  # 每張圖片高度（考慮邊距和間距）
 
+    total_groups = len(groups)
+    current_group = 0
+
     # 處理每組圖片
     for group_name, image_paths in tqdm(groups.items(), desc="處理圖片組"):
+        current_group += 1
+        progress = int((current_group / total_groups) * 100)
+        sio.emit('status_update', {
+            'status': f'正在分析圖表 {current_group}/{total_groups}...',
+            'progress': progress
+        })
+        
         logging.info(f"正在處理組：{group_name}")
         # 調用 Gemini API 分析
         try:
@@ -186,16 +200,31 @@ def generate_pdf(groups, output_pdf):
 
 # 主程式
 def main():
-    static_folder = "static"
-    output_pdf = "chart_analysis.pdf"
+    try:
+        # 連接到 Socket.IO 服務器
+        sio.connect('http://localhost:5000', transports=['websocket'])
+        
+        static_folder = "static"
+        output_pdf = "圖表報告.pdf"
 
-    # 分組圖片
-    logging.info("開始分組圖片...")
-    groups = group_images(static_folder)
-    logging.info(f"圖片分組完成，共 {len(groups)} 組。")
+        # 分組圖片
+        logging.info("開始分組圖片...")
+        sio.emit('status_update', {'status': '正在分組圖表...', 'progress': 20})
+        groups = group_images(static_folder)
+        logging.info(f"圖片分組完成，共 {len(groups)} 組。")
 
-    # 生成 PDF
-    generate_pdf(groups, output_pdf)
+        # 生成 PDF
+        sio.emit('status_update', {'status': '正在生成圖表分析報告...', 'progress': 40})
+        generate_pdf(groups, output_pdf)
+        
+        # 完成後斷開連接
+        sio.disconnect()
+        
+    except Exception as e:
+        logging.error(f"發生錯誤：{str(e)}")
+        if sio.connected:
+            sio.disconnect()
+        raise
 
 if __name__ == "__main__":
     main()

@@ -225,6 +225,43 @@
         .spinner-border {
             color: var(--primary-color);
         }
+
+        .progress {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            height: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(124, 231, 255, 0.1);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, 
+                rgba(124, 231, 255, 0.2) 0%, 
+                rgba(124, 231, 255, 0.8) 50%,
+                rgba(124, 231, 255, 0.2) 100%);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(124, 231, 255, 0.3);
+            transition: width 0.5s ease-in-out;
+        }
+
+        .progress-bar-striped {
+            background-image: linear-gradient(45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent);
+            background-size: 1rem 1rem;
+            animation: progress-bar-stripes 1s linear infinite;
+        }
+
+        @keyframes progress-bar-stripes {
+            0% { background-position: 1rem 0; }
+            100% { background-position: 0 0; }
+        }
     </style>
 </head>
 <body>
@@ -244,6 +281,24 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
+        </div>
+
+        <div id="statusSection" class="section" style="display: none;">
+            <h2 class="text-center">處理狀態</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5 class="card-title">目前進度</h5>
+                        <div class="progress mb-3">
+                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div id="statusText" class="text-center">
+                        等待開始處理...
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="text-center mb-4">
@@ -282,7 +337,10 @@
     </div>
 
     <script>
-        const socket = io();
+        const socket = io({
+            transports: ['websocket'],
+            path: '/socket.io'
+        });
         
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -290,6 +348,11 @@
             const url = urlInput.value;
             
             if (url) {
+                // 顯示狀態區域
+                document.getElementById('statusSection').style.display = 'block';
+                document.getElementById('statusText').textContent = '正在處理 Google Sheet 資料...';
+                document.getElementById('progressBar').style.width = '20%';
+                
                 fetch('/upload', {
                     method: 'POST',
                     headers: {
@@ -301,6 +364,8 @@
                 .then(data => {
                     if (data.success) {
                         document.getElementById('generateReport').disabled = false;
+                        document.getElementById('statusText').textContent = '資料處理完成，請點擊生成報告按鈕';
+                        document.getElementById('progressBar').style.width = '40%';
                     }
                 });
             }
@@ -310,6 +375,9 @@
             this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...';
             this.disabled = true;
             
+            document.getElementById('statusText').textContent = '正在生成報告...';
+            document.getElementById('progressBar').style.width = '60%';
+            
             socket.emit('generate_report');
         });
 
@@ -317,9 +385,13 @@
             const generateBtn = document.getElementById('generateReport');
             generateBtn.innerHTML = 'Generate Analysis Report';
             generateBtn.disabled = false;
+            generateBtn.classList.remove('spinner-border');
             
             const downloadSection = document.getElementById('downloadSection');
             downloadSection.style.display = 'block';
+            
+            document.getElementById('statusText').textContent = '報告生成完成！';
+            document.getElementById('progressBar').style.width = '100%';
             
             const downloadLinks = document.querySelectorAll('.download-link');
             downloadLinks.forEach(link => {
@@ -328,10 +400,19 @@
             });
         });
 
+        socket.on('status_update', function(data) {
+            document.getElementById('statusText').textContent = data.status;
+            document.getElementById('progressBar').style.width = data.progress + '%';
+        });
+
         socket.on('error', function(error) {
             const generateBtn = document.getElementById('generateReport');
             generateBtn.innerHTML = 'Generate Analysis Report';
             generateBtn.disabled = false;
+            generateBtn.classList.remove('spinner-border');
+            
+            document.getElementById('statusText').textContent = '發生錯誤：' + error;
+            document.getElementById('progressBar').style.width = '0%';
             alert('An error occurred: ' + error);
         });
     </script>

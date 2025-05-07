@@ -5,6 +5,7 @@ import pandas as pd
 from snownlp import SnowNLP
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import sys
 
 # 載入 .env
 load_dotenv()
@@ -18,13 +19,19 @@ scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 creds = ServiceAccountCredentials.from_json_keyfile_dict(google_json_dict, scope)
 client = gspread.authorize(creds)
 
-# 你的 Google Sheet ID（原始資料）與目標寫入試算表 ID
-input_sheet_id = "1W1c9d6bVet8Lhdb69NbUHjkFxVOdrYOu5VV-xRVh91g"       # TODO: 替換成實際ID
-input_ws = client.open_by_key(input_sheet_id).sheet1
+# 從命令行參數獲取 Google Sheet ID
+if len(sys.argv) > 1:
+    input_sheet_id = sys.argv[1]
+else:
+    input_sheet_id = "1W1c9d6bVet8Lhdb69NbUHjkFxVOdrYOu5VV-xRVh91g"  # 預設值
 
+try:
+    input_ws = client.open_by_key(input_sheet_id).sheet1
+except Exception as e:
+    print(f"無法訪問 Google Sheet: {e}")
+    sys.exit(1)
 
 # 讀取原始回饋資料
-
 data = input_ws.get_all_records()
 df = pd.DataFrame(data)
 
@@ -73,4 +80,4 @@ result_df = df[result_cols]
 
 # 將結果儲存成 CSV 檔案
 result_df.to_csv("dataresult.csv", index=False, encoding='utf-8-sig')
-print("✅ 分析完成，結果已儲存為本地端 CSV 檔案：dataresult.csv")
+print("分析完成，結果已儲存為本地端 CSV 檔案：dataresult.csv")

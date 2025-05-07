@@ -89,7 +89,7 @@ def create_pdf(path, title, content):
 create_pdf("分析建議報告.pdf", "人資分析與改善建議報告", analysis_text)
 create_pdf("問卷設計建議.pdf", "下一次問卷設計建議", form_text)
 
-print("✅ 兩份 PDF 產出完成！")
+print("兩份 PDF 產出完成！")
 
 
 
