@@ -52,6 +52,13 @@ pip install -r requirements.txt
 pip install flask flask-socketio eventlet gspread oauth2client pandas numpy matplotlib seaborn python-dotenv snownlp reportlab google-generativeai pillow tqdm retrying
 ```
 
+### 3. 測試用的 Google Sheet ID
+本系統主要以此 Sheet ID 進行測試：
+```
+1W1c9d6bVet8Lhdb69NbUHjkFxVOdrYOu5VV-xRVh91g
+```
+你可以使用此 ID 來測試系統功能。
+
 ---
 
 ## 必要檔案與設定
