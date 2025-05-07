@@ -227,31 +227,28 @@
         }
 
         .progress {
-            background: rgba(26, 26, 26, 0.8);
-            border: 1px solid var(--border-color);
+            background: rgba(26,26,26,0.8);
+            border: 1.5px solid #7ce7ff;
             border-radius: 12px;
-            height: 12px;
+            height: 14px;
             overflow: hidden;
-            box-shadow: 0 0 10px rgba(124, 231, 255, 0.1);
+            box-shadow: 0 0 12px 2px #7ce7ff33;
         }
 
         .progress-bar {
-            background: linear-gradient(90deg, 
-                rgba(124, 231, 255, 0.2) 0%, 
-                rgba(124, 231, 255, 0.8) 50%,
-                rgba(124, 231, 255, 0.2) 100%);
+            background: linear-gradient(90deg, #7ce7ff 0%, #ffffff 50%, #7ce7ff 100%);
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(124, 231, 255, 0.3);
-            transition: width 0.5s ease-in-out;
+            box-shadow: 0 0 24px 6px #7ce7ff, 0 0 8px 2px #fff;
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
         }
 
         .progress-bar-striped {
             background-image: linear-gradient(45deg,
-                rgba(255, 255, 255, 0.15) 25%,
+                rgba(255,255,255,0.25) 25%,
                 transparent 25%,
                 transparent 50%,
-                rgba(255, 255, 255, 0.15) 50%,
-                rgba(255, 255, 255, 0.15) 75%,
+                rgba(255,255,255,0.25) 50%,
+                rgba(255,255,255,0.25) 75%,
                 transparent 75%,
                 transparent);
             background-size: 1rem 1rem;
@@ -284,18 +281,18 @@
         </div>
 
         <div id="statusSection" class="section" style="display: none;">
-            <h2 class="text-center">處理狀態</h2>
+            <h2 class="text-center">Processing Status</h2>
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <h5 class="card-title">目前進度</h5>
+                        <h5 class="card-title">Current Progress</h5>
                         <div class="progress mb-3">
                             <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
                                  role="progressbar" style="width: 0%"></div>
                         </div>
                     </div>
                     <div id="statusText" class="text-center">
-                        等待開始處理...
+                        Waiting to start processing...
                     </div>
                 </div>
             </div>
@@ -350,7 +347,7 @@
             if (url) {
                 // 顯示狀態區域
                 document.getElementById('statusSection').style.display = 'block';
-                document.getElementById('statusText').textContent = '正在處理 Google Sheet 資料...';
+                document.getElementById('statusText').textContent = 'Processing Google Sheet data...';
                 document.getElementById('progressBar').style.width = '20%';
                 
                 fetch('/upload', {
@@ -364,7 +361,7 @@
                 .then(data => {
                     if (data.success) {
                         document.getElementById('generateReport').disabled = false;
-                        document.getElementById('statusText').textContent = '資料處理完成，請點擊生成報告按鈕';
+                        document.getElementById('statusText').textContent = 'Data processing complete. Please click the generate report button.';
                         document.getElementById('progressBar').style.width = '40%';
                     }
                 });
@@ -375,7 +372,7 @@
             this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...';
             this.disabled = true;
             
-            document.getElementById('statusText').textContent = '正在生成報告...';
+            document.getElementById('statusText').textContent = 'Generating report...';
             document.getElementById('progressBar').style.width = '60%';
             
             socket.emit('generate_report');
@@ -390,7 +387,7 @@
             const downloadSection = document.getElementById('downloadSection');
             downloadSection.style.display = 'block';
             
-            document.getElementById('statusText').textContent = '報告生成完成！';
+            document.getElementById('statusText').textContent = 'Report generation complete!';
             document.getElementById('progressBar').style.width = '100%';
             
             const downloadLinks = document.querySelectorAll('.download-link');
@@ -411,7 +408,7 @@
             generateBtn.disabled = false;
             generateBtn.classList.remove('spinner-border');
             
-            document.getElementById('statusText').textContent = '發生錯誤：' + error;
+            document.getElementById('statusText').textContent = 'Error: ' + error;
             document.getElementById('progressBar').style.width = '0%';
             alert('An error occurred: ' + error);
         });

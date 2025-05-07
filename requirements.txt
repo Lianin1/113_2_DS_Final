@@ -1,0 +1,16 @@
+flask
+flask-socketio
+eventlet
+gspread
+oauth2client
+pandas
+numpy
+matplotlib
+seaborn
+python-dotenv
+snownlp
+reportlab
+google-generativeai
+pillow
+tqdm
+retrying 
