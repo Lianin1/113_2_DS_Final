@@ -19,12 +19,12 @@ if not os.path.exists(csv_file):
     raise FileNotFoundError(f"找不到檔案：{csv_file}，請確保檔案位於程式同一資料夾")
 df = pd.read_csv(csv_file, encoding='utf-8')
 
-# 部門編號映射
-department_map = {0: '人力資源', 1: '財務', 2: '技術', 3: '行銷', 4: '運營'}
-df['部門名稱'] = df['部門'].map(department_map)
+
 
 # 計算平均離職風險分級
-avg_risk_by_dept = df.groupby('部門名稱')['離職風險分級'].mean()
+
+avg_risk_by_dept = df.groupby('部門')['離職風險分級'].mean()
+
 print("各部門平均離職風險分級：")
 print(avg_risk_by_dept)
 
@@ -33,7 +33,8 @@ sns.set_theme(style="whitegrid")
 
 # 繪製柱狀圖
 plt.figure(figsize=(8, 6))
-bars = sns.barplot(x='部門名稱', y='離職風險分級', data=avg_risk_by_dept.reset_index(), palette='pastel')
+# 正確的欄位名
+bars = sns.barplot(x='部門', y='離職風險分級', data=avg_risk_by_dept.reset_index(), palette='pastel')
 
 # 在每個柱子上顯示平均值
 for bar in bars.patches:
