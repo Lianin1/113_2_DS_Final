@@ -7,10 +7,13 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-print(os.path.exists('NotoSansTC-Regular.ttf'))  # 檢查字型檔是否存在
+# 字型路徑（使用 TTC 格式）
+font_path = os.path.join(os.path.dirname(__file__), 'msjh.ttc')
+if not os.path.exists(font_path):
+    raise FileNotFoundError("找不到 msjh.ttc 字型檔案，請將其放在與程式相同的資料夾內。")
 
-# === 設定字型 ===
-pdfmetrics.registerFont(TTFont('NotoSansTC', 'NotoSansTC-Regular.ttf'))
+# 註冊字型
+pdfmetrics.registerFont(TTFont('msjh', font_path, subfontIndex=0))
 
 # === 載入 API 金鑰與初始化 Gemini ===
 load_dotenv()
@@ -18,7 +21,7 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("models/gemini-1.5-flash")
 
 # === 讀取與處理資料 ===
-df = pd.read_csv("人資數據.csv")
+df = pd.read_csv("dataresult1.csv")
 
 # ✅ 不進行欄位映射，直接使用原始中文資料
 # print(df.head()) 可以查看欄位是否正確為「男／女」、「技術」等
@@ -74,13 +77,13 @@ def create_pdf(path, title, content):
             y -= font_size + extra_spacing
 
     # 標題
-    c.setFont("NotoSansTC", 15)
+    c.setFont("msjh", 15)
     c.drawString(margin, y, title)
     y -= 30
 
     # 內文
     for line in content.split("\n"):
-        draw_wrapped_line(line.strip(), "NotoSansTC", 11, extra_spacing=5)
+        draw_wrapped_line(line.strip(), "msjh", 11, extra_spacing=5)
         y -= 5
 
     c.save()
