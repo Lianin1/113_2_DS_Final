@@ -6,6 +6,7 @@
     <title>RetainAI - Instructions</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #7ce7ff;
@@ -150,95 +151,220 @@
             top: 2rem;
             left: 2rem;
         }
+
+        .step-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(26, 26, 26, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .format-card {
+            background: rgba(26, 26, 26, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .format-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .arrow-down {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .visual-guide {
+            background: rgba(26, 26, 26, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .sheet-preview {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #000;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 2rem 0;
+        }
     </style>
 </head>
 <body>
     <div class="header text-center">
-        <a href="/" class="btn btn-primary back-btn">← Back</a>
+        <a href="/" class="btn btn-primary back-btn"><i class="fas fa-arrow-left"></i> Back</a>
         <h1>Instructions</h1>
     </div>
 
     <div class="container">
         <div class="section">
-            <h2>Google Sheet Survey Design Guide</h2>
-            <p>To ensure the system can correctly analyze your data, please design your Google Sheet survey according to the following format:</p>
+            <h2></i> Google Sheet Survey Design Guide</h2>
             
-            <h3 class="mt-4 mb-3">Required Column Format</h3>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Column</th>
-                            <th>Description</th>
-                            <th>Format Requirements</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>A. Employee ID</td>
-                            <td>Unique identifier for each employee</td>
-                            <td>Text format</td>
-                        </tr>
-                        <tr>
-                            <td>B. Gender</td>
-                            <td>Employee gender</td>
-                            <td>Male/Female</td>
-                        </tr>
-                        <tr>
-                            <td>C. Department</td>
-                            <td>Department name</td>
-                            <td>Text format</td>
-                        </tr>
-                        <tr>
-                            <td>D. Level</td>
-                            <td>Job level</td>
-                            <td>Junior/Mid/Senior</td>
-                        </tr>
-                        <tr>
-                            <td>E. Work Environment Satisfaction</td>
-                            <td>1-5 rating</td>
-                            <td>Number 1-5</td>
-                        </tr>
-                        <tr>
-                            <td>F. Salary & Benefits Satisfaction</td>
-                            <td>1-5 rating</td>
-                            <td>Number 1-5</td>
-                        </tr>
-                        <tr>
-                            <td>G. Management System Satisfaction</td>
-                            <td>1-5 rating</td>
-                            <td>Number 1-5</td>
-                        </tr>
-                        <tr>
-                            <td>H. Work-Life Balance</td>
-                            <td>1-5 rating</td>
-                            <td>Number 1-5</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
-            <h3 class="mt-4 mb-3">Qualitative Questions</h3>
-            <p>After column I, you can add any qualitative questions, but at least one qualitative question is required. These questions will be used to generate in-depth analysis reports.</p>
 
             <div class="mt-4">
-                <h3>Example File</h3>
-                <p>You can download our example file for reference:</p>
-                <a href="/download/example" class="btn btn-primary">Download Example File (DS_test.csv)</a>
+                <h3 class="mb-4"><i class="fas fa-table"></i> Required Format</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-id-card format-icon"></i>
+                            <span>Employee ID (Text)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-venus-mars format-icon"></i>
+                            <span>Gender (Male/Female)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-building format-icon"></i>
+                            <span>Department (Text)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-layer-group format-icon"></i>
+                            <span>Level (Junior/Mid/Senior)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="mb-4"><i class="fas fa-star"></i> Rating Questions (1-5)</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-briefcase format-icon"></i>
+                            <span>Work Environment</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-money-bill-wave format-icon"></i>
+                            <span>Salary & Benefits</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-cogs format-icon"></i>
+                            <span>Management System</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="format-card">
+                            <i class="fas fa-balance-scale format-icon"></i>
+                            <span>Work-Life Balance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="mb-4"><i class="fas fa-comments"></i> Qualitative Questions</h3>
+
+                <div class="format-card">
+                    
+                    <span>After column I, you can add any qualitative questions. At least one qualitative question is required for in-depth analysis reports.</span>
+                </div>
+            </div>
+
+            <div class="text-center my-4">
+                <div class="divider">
+                    
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <h3><i class="fas fa-file-download"></i> Example File</h3>
+                <p class="mb-4">Download our example file for reference:</p>
+                <a href="/download/example" class="btn btn-primary btn-lg">
+                    <i class="fas fa-download me-2"></i>Download Example File (DS_test.csv)
+                </a>
             </div>
         </div>
 
         <div class="section">
-            <h2>Usage Steps</h2>
-            <ol class="list-group list-group-numbered">
-                <li class="list-group-item bg-transparent text-light border-secondary">Design your Google Sheet survey according to the format above</li>
-                <li class="list-group-item bg-transparent text-light border-secondary">Send the survey to employees</li>
-                <li class="list-group-item bg-transparent text-light border-secondary">Copy the Google Sheet ID (from the URL)</li>
-                <li class="list-group-item bg-transparent text-light border-secondary">Enter the Sheet ID on the homepage and submit</li>
-                <li class="list-group-item bg-transparent text-light border-secondary">Wait for the system to process</li>
-                <li class="list-group-item bg-transparent text-light border-secondary">Click "Generate Analysis Report"</li>
-                <li class="list-group-item bg-transparent text-light border-secondary">Download the generated reports and charts</li>
-            </ol>
+            <h2><i class="fas fa-tasks"></i> Usage Steps</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <i class="fas fa-file-alt step-icon"></i>
+                        <h4>1. Design Survey</h4>
+                        <p>Create your Google Sheet</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <i class="fas fa-paper-plane step-icon"></i>
+                        <h4>2. Send Survey</h4>
+                        <p>Share with your employees</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <i class="fas fa-link step-icon"></i>
+                        <h4>3. Get Sheet ID</h4>
+                        <p>Copy ID from Google Sheet</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <i class="fas fa-upload step-icon"></i>
+                        <h4>4. Submit</h4>
+                        <p>Enter Sheet ID on homepage</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <i class="fas fa-chart-bar step-icon"></i>
+                        <h4>5. Generate Report</h4>
+                        <p>Click to create analysis</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <i class="fas fa-download step-icon"></i>
+                        <h4>6. Download</h4>
+                        <p>Get your reports and charts</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
