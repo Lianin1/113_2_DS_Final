@@ -88,6 +88,16 @@ def index():
     """提供主頁面"""
     return send_from_directory('template', 'Index.html')
 
+@app.route('/instruction')
+def instruction():
+    """提供使用說明頁面"""
+    return send_from_directory('template', 'Instruction.html')
+
+@app.route('/download/example')
+def download_example():
+    """提供範例檔案下載"""
+    return send_file('DS_test.csv', as_attachment=True)
+
 @app.route('/upload', methods=['POST'])
 def upload():
     """處理 Google Sheet ID 上傳"""
