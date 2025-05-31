@@ -15,6 +15,14 @@
   
 </details>
 
+<details>
+  <summary><strong>期末專題報告</strong></summary>
+
+  [影片 YouTube 連結](https://www.youtube.com/watch?v=m7WkSOR7Cq4)
+  
+</details>
+
+
 <h6>⭐️</h6>
 
 ---
